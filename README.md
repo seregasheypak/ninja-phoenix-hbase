@@ -14,3 +14,6 @@ https://groups.google.com/forum/#!topic/ninja-framework/FoDKG20lqwg
 http://flywaydb.org/contribute/code/contributeNewDatabase.html
 
 phoenix distro
+
+#json is not parsed:
+https://groups.google.com/forum/#!topic/ninja-framework/n-NemLw1Rgo
