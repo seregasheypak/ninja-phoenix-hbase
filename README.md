@@ -9,3 +9,8 @@ https://groups.google.com/forum/#!topic/phoenix-hbase-user/R6AkfnX9a3U
 https://groups.google.com/forum/#!topic/ninja-framework/hGNK7OrEd70
 
 https://groups.google.com/forum/#!topic/ninja-framework/FoDKG20lqwg
+
+#extend to support phoenix
+http://flywaydb.org/contribute/code/contributeNewDatabase.html
+
+phoenix distro

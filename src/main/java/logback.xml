@@ -8,7 +8,18 @@
     </encoder>
   </appender>
 
-  <root level="info">
+  <root level="debug">
     <appender-ref ref="STDOUT" />
   </root>
+
+  <logger name="org" level="warn"
+          additivity="false">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <logger name="net" level="warn"
+          additivity="false">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
 </configuration>

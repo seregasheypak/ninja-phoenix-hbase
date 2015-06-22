@@ -17,20 +17,34 @@
     <properties>
         <ninja.version>5.1.1</ninja.version>
         <jetty.version>9.2.10.v20150310</jetty.version>
-        <phoenix.version>4.4.0-HBase-1.0</phoenix.version>
+        <phoenix.version>4.3.0-cdh5.4.0-SNAPSHOT</phoenix.version>  <!--4.4.0-HBase-1.0 4.4.0-HBase-1.1 -->
+        <!-- 4.4.0-HBase-0.98 -->
+        <!-- 4.4.0-HBase-1.0  java.lang.RuntimeException: java.lang.NoSuchMethodError: org.apache.hadoop.hbase.client.Put.setWriteToWAL(Z)Lorg/apache/hadoop/hbase/client/Put;-->
+        <cdh.hbase.version>1.0.0-cdh5.4.3</cdh.hbase.version>
 
         <local.hdfs.port>44444</local.hdfs.port>
         <local.zookeeper.port>44445</local.zookeeper.port>
         <local.hbase.master.port>44446</local.hbase.master.port>
         <local.hbase.region.server.port>44447</local.hbase.region.server.port>
+
+        <hbase.zookeeper.property.clientPort>${local.zookeeper.port}</hbase.zookeeper.property.clientPort>
+        <hbase.zookeeper.quorum>localhost</hbase.zookeeper.quorum>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
 
     <build>
         <plugins>
             <plugin>
                 <groupId>ru.megafon.datalabs</groupId>
                 <artifactId>mini-hdfs-cluster-maven-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.2-cdh5.4.3</version>
                 <configuration>
                     <port>${local.hdfs.port}</port>
                     <zookeeperPort>${local.zookeeper.port}</zookeeperPort>
@@ -40,7 +54,7 @@
                 <executions>
                     <execution>
                         <id>start</id>
-                        <phase>pre-integration-test</phase>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>start-hbase-cluster</goal>
                         </goals>
@@ -59,26 +73,27 @@
                         <groupId>org.apache.phoenix</groupId>
                         <artifactId>phoenix-core</artifactId>
                         <version>${phoenix.version}</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>org.apache.hbase</groupId>
-                                <artifactId>hbase-server</artifactId>
-                            </exclusion>
-                            <exclusion>
-                                <groupId>org.apache.hbase</groupId>
-                                <artifactId>hbase-client</artifactId>
-                            </exclusion>
-                            <exclusion>
-                                <groupId>org.apache.hbase</groupId>
-                                <artifactId>hbase-common</artifactId>
-                            </exclusion>
-                        </exclusions>
+                        <!--<exclusions>-->
+                            <!--<exclusion>-->
+                                <!--<groupId>org.apache.hbase</groupId>-->
+                                <!--<artifactId>hbase-server</artifactId>-->
+                            <!--</exclusion>-->
+                            <!--<exclusion>-->
+                                <!--<groupId>org.apache.hbase</groupId>-->
+                                <!--<artifactId>hbase-client</artifactId>-->
+                            <!--</exclusion>-->
+                            <!--<exclusion>-->
+                                <!--<groupId>org.apache.hbase</groupId>-->
+                                <!--<artifactId>hbase-common</artifactId>-->
+                            <!--</exclusion>-->
+                        <!--</exclusions>-->
                     </dependency>
                     <dependency>
                         <groupId>org.apache.hbase</groupId>
                         <artifactId>hbase-protocol</artifactId>
-                        <version>1.0.0-cdh5.4.2</version>
+                        <version>${cdh.hbase.version}</version>
                     </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -202,6 +217,7 @@
                 <includes>
                     <include>application.conf</include>
                 </includes>
+                <targetPath>conf</targetPath>
                 <filtering>true</filtering>
             </resource>
             <resource>
@@ -222,45 +238,6 @@
         </resources>
     </build>
 
-    <profiles>
-        <profile>
-            <id>itest</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <groups>integration</groups>
-                            <systemPropertyVariables>
-                                <zookeeperPort>${local.zookeeper.port}</zookeeperPort>
-                            </systemPropertyVariables>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>run-integration-tests</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                </goals>
-                                <configuration>
-                                    <includes>
-                                        <include>**/*Test.java</include>
-                                    </includes>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>verify-integration-tests</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -298,19 +275,6 @@
             <version>${ninja.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.21</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!--<dependency>-->
         <!--<groupId>info.cukes</groupId>-->
         <!--<artifactId>cucumber-java8</artifactId>-->
@@ -331,20 +295,31 @@
                     <artifactId>commons-logging</artifactId>
                     <groupId>commons-logging</groupId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-server</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.hbase</groupId>
-                    <artifactId>hbase-common</artifactId>
-                </exclusion>
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.hbase</groupId>-->
+                    <!--<artifactId>hbase-server</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.hbase</groupId>-->
+                    <!--<artifactId>hbase-client</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.hbase</groupId>-->
+                    <!--<artifactId>hbase-common</artifactId>-->
+                <!--</exclusion>-->
             </exclusions>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.hbase</groupId>-->
+            <!--<artifactId>hbase-server</artifactId>-->
+            <!--<version>${cdh.hbase.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>commons-logging</groupId>-->
+                    <!--<artifactId>commons-logging</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>

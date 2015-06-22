@@ -18,6 +18,10 @@ package conf;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import dao.VisitorDao;
+import dao.VisitorDaoImpl;
+import jdbc.JdbcFacade;
+import jdbc.JdbcFacadeImpl;
 
 @Singleton
 public class Module extends AbstractModule {
@@ -26,7 +30,8 @@ public class Module extends AbstractModule {
     protected void configure() {
         
         // bind your injections here!
-        
+        bind(JdbcFacade.class).to(JdbcFacadeImpl.class);
+        bind(VisitorDao.class).to(VisitorDaoImpl.class);
     }
 
 }
