@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS unique_visitor
+CREATE TABLE IF NOT EXISTS unique_site_visitor
 (
    visitorId VARCHAR   NOT NULL,
    siteId    INTEGER   NOT NULL,
