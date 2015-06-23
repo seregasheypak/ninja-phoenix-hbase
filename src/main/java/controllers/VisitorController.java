@@ -33,7 +33,7 @@ public class VisitorController {
     }
 
     public Result find( @Param("id") String id){
-        LOG.debug("find: {}", id);
+        LOG.debug("find: {}:{}", id, visitorDao.find(id));
         return Results
                 .ok()
                 .json()

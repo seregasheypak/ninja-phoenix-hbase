@@ -17,7 +17,6 @@
 package controllers;
 
 
-import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import models.Visitor;
 import ninja.NinjaDocTester;
@@ -29,6 +28,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -62,14 +62,23 @@ public class VisitorControllerDocTesterTest extends NinjaDocTester {
     }
     
     @Test
-    public void testSaveNewVisitor() {
+    @SneakyThrows
+    public void testSaveAndFindNewVisitor() {
         Visitor visitor = Visitor.builder().visitorId(newVisitorId).siteId(1).visitTs(2L).build();
-        String visitorJson = new Gson().toJson(visitor);
-        LOG.debug("testSaveNewVisitor payload: [{}]", visitorJson );
+        saveNewVisitor(visitor);
+        findNewVisitor(visitor);
+    }
+
+    private void saveNewVisitor(Visitor visitor){
         Response response = makeRequest(Request.POST().url(testServerUrl().path(VISITOR_URL))
-                .payload(visitorJson)
-                            .contentTypeApplicationJson());
-        
+                .payload(visitor)
+                .contentTypeApplicationJson());
+
+        assertThat(response.payloadJsonAs(Map.class).get("result"), equalTo(String.valueOf(true)));
+    }
+
+    private void findNewVisitor(Visitor visitor){
+        Response response = makeRequest(Request.GET().url(testServerUrl().path(VISITOR_URL).addQueryParameter("id", visitor.getVisitorId())));
         assertThat(response.payloadJsonAs(Visitor.class), equalTo(visitor));
     }
 }

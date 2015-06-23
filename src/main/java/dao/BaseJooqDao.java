@@ -18,4 +18,8 @@ public class BaseJooqDao {
     protected DSLContext dslContext(){
         return DSL.using(jdbcFacade.createConnection(), new Settings().withRenderNameStyle(RenderNameStyle.AS_IS));
     }
+
+    public JdbcFacade getJdbcFacade(){
+        return jdbcFacade;
+    }
 }

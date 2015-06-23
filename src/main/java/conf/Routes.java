@@ -17,7 +17,6 @@
 package conf;
 
 
-import controllers.ApplicationController;
 import controllers.SetupController;
 import controllers.VisitorController;
 import ninja.AssetsController;
@@ -27,17 +26,11 @@ import ninja.application.ApplicationRoutes;
 public class Routes implements ApplicationRoutes {
 
     @Override
-    public void init(Router router) {  
-        
-        router.GET().route("/").with(ApplicationController.class, "index");
-
+    public void init(Router router) {
         router.GET().route("/setup").with(SetupController.class, "setup");
 
         router.GET().route("/visitor").with(VisitorController.class, "find");
         router.POST().route("/visitor").with(VisitorController.class, "save");
-
-        //default
-        router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
 
  
         ///////////////////////////////////////////////////////////////////////
@@ -49,7 +42,7 @@ public class Routes implements ApplicationRoutes {
         ///////////////////////////////////////////////////////////////////////
         // Index / Catchall shows index page
         ///////////////////////////////////////////////////////////////////////
-        router.GET().route("/.*").with(ApplicationController.class, "index");
+        //router.GET().route("/.*").with(ApplicationController.class, "index");
     }
 
 }
