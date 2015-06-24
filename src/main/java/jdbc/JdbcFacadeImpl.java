@@ -46,7 +46,9 @@ public class JdbcFacadeImpl implements JdbcFacade{
 
     @SneakyThrows
     public Connection createConnection(){
-        return DriverManager.getConnection(composeJdbcUrl());
+        Connection connection = DriverManager.getConnection(composeJdbcUrl());
+        connection.setAutoCommit(true);
+        return connection;
     }
 
     private void close(Connection connection){
