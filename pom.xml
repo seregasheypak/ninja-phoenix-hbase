@@ -17,9 +17,7 @@
     <properties>
         <ninja.version>5.1.1</ninja.version>
         <jetty.version>9.2.10.v20150310</jetty.version>
-        <phoenix.version>4.3.0-cdh5.4.0-SNAPSHOT</phoenix.version>  <!--4.4.0-HBase-1.0 4.4.0-HBase-1.1 -->
-        <!-- 4.4.0-HBase-0.98 -->
-        <!-- 4.4.0-HBase-1.0  java.lang.RuntimeException: java.lang.NoSuchMethodError: org.apache.hadoop.hbase.client.Put.setWriteToWAL(Z)Lorg/apache/hadoop/hbase/client/Put;-->
+        <phoenix.version>4.3.0-cdh5.4.0-SNAPSHOT</phoenix.version>
         <cdh.hbase.version>1.0.0-cdh5.4.3</cdh.hbase.version>
 
         <local.hdfs.port>44444</local.hdfs.port>
@@ -73,20 +71,6 @@
                         <groupId>org.apache.phoenix</groupId>
                         <artifactId>phoenix-core</artifactId>
                         <version>${phoenix.version}</version>
-                        <!--<exclusions>-->
-                            <!--<exclusion>-->
-                                <!--<groupId>org.apache.hbase</groupId>-->
-                                <!--<artifactId>hbase-server</artifactId>-->
-                            <!--</exclusion>-->
-                            <!--<exclusion>-->
-                                <!--<groupId>org.apache.hbase</groupId>-->
-                                <!--<artifactId>hbase-client</artifactId>-->
-                            <!--</exclusion>-->
-                            <!--<exclusion>-->
-                                <!--<groupId>org.apache.hbase</groupId>-->
-                                <!--<artifactId>hbase-common</artifactId>-->
-                            <!--</exclusion>-->
-                        <!--</exclusions>-->
                     </dependency>
                     <dependency>
                         <groupId>org.apache.hbase</groupId>
@@ -275,17 +259,6 @@
             <version>${ninja.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>info.cukes</groupId>-->
-        <!--<artifactId>cucumber-java8</artifactId>-->
-        <!--<version>1.2.2</version>-->
-        <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>info.cukes</groupId>-->
-        <!--<artifactId>cucumber-testng</artifactId>-->
-        <!--<version>1.2.2</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.phoenix</groupId>
             <artifactId>phoenix-core</artifactId>
@@ -295,31 +268,8 @@
                     <artifactId>commons-logging</artifactId>
                     <groupId>commons-logging</groupId>
                 </exclusion>
-                <!--<exclusion>-->
-                    <!--<groupId>org.apache.hbase</groupId>-->
-                    <!--<artifactId>hbase-server</artifactId>-->
-                <!--</exclusion>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.apache.hbase</groupId>-->
-                    <!--<artifactId>hbase-client</artifactId>-->
-                <!--</exclusion>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.apache.hbase</groupId>-->
-                    <!--<artifactId>hbase-common</artifactId>-->
-                <!--</exclusion>-->
             </exclusions>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.hbase</groupId>-->
-            <!--<artifactId>hbase-server</artifactId>-->
-            <!--<version>${cdh.hbase.version}</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>commons-logging</groupId>-->
-                    <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
